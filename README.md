@@ -10,6 +10,32 @@ Also, this has been an unreasonable amount of work just to prove a point, and is
 Anyway, To run the script, you need Python3 and matplotlib (just comment out the plotting business, if you
 don't want to install matplotlib)
 
+# Models
+
+Assumption: Volume = Weight / Density
+
+There are five models provided:
+
+## CDDA Original
+
+The original volume calculation from https://github.com/CleverRaven/Cataclysm-DDA/pull/74162)
+
+## CDDA Simple
+
+A proposed volume calculation model based on an online tool, found in https://github.com/CleverRaven/Cataclysm-DDA/pull/74348
+
+## BMI Model
+
+Uses the calculations for producing body fat ratio from BMI, and then applying the average body density based on lipids, water, and protein onto the weight.
+
+## Brozak Model
+
+Uses the Brozak formula for body fat ratio, estimated from BMI. The Brozak model reputedly has ±1% accuracy against empirical methods such as water immersion.
+
+## Siri Model
+
+An older model that used to be used in the same manner as the Brozak model, reputely has ±10% accuracy compared to empirical methods.
+
 # Graph over relations between models and parameters
 
 ![3D Plot](Figure_1.png)
