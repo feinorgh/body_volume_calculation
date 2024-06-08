@@ -27,6 +27,8 @@ A proposed volume calculation model based on an online tool, found in https://gi
 
 Uses the calculations for producing body fat ratio from BMI, and then applying the average body density based on lipids, water, and protein onto the weight.
 
+This model also can account for age and gender, although the differences I've tested so far are minimal.
+
 ## Brozek Model
 
 Uses the Brozek formula for body fat ratio, estimated from BMI. The Brozek model reputedly has ±1% accuracy against empirical methods such as water immersion.
@@ -65,7 +67,7 @@ human size ranges.
 * https://en.wikipedia.org/wiki/Body_fat_percentage
 * https://en.wikipedia.org/wiki/Body_mass_index
 * https://calculator.academy/body-volume-calculator/
-
+* https://pubmed.ncbi.nlm.nih.gov/21085903/
 
 # Results
 
