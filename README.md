@@ -5,19 +5,22 @@ of a human body.
 
 It is by no means a guarantee that the results are accurate, or can be relied upon in any medical context.
 
-To run the script, you need matplotlib (or just comment out the plotting business)
+Also, this has been an unreasonable amount of work just to prove a point, and is unnecessarily detailed.
+
+Anyway, To run the script, you need Python3 and matplotlib (just comment out the plotting business, if you
+don't want to install matplotlib)
 
 # Graph over relations between models and parameters
 
 ![3D Plot](Figure_1.png)
 
-The green lines are the original CDDA volume calculation (independent of weight).
+The green lines are the original CDDA volume calculation (independent of weight) results for various heighs.
 
-The red line is the BMI model.
+The red lines are the BMI model results.
 
-The blue line is the Brozak model.
+The blue lines are the Brozak model results.
 
-The yellow line is the Siri model.
+The yellow lines are the Siri model results.
 
 You can examine this graph better if you run the script yourself, where you can rotate and zoom in.
 
