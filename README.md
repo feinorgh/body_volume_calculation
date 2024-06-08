@@ -1,9 +1,8 @@
 # Human Body Volume Calculation (Mostly for Cataclysm: Dark Days Ahead)
 
-This repository contains a script that uses four different models to estimate volume
-of a human body.
+This repository contains a script that uses five different models to estimate the volume of a human body.
 
-It is by no means a guarantee that the results are accurate, or can be relied upon in any medical context.
+There is no guarantee that the results are accurate, or can be relied upon in any medical context, or even useful in a gaming context.
 
 Also, this has been an unreasonable amount of work just to prove a point, and is unnecessarily detailed.
 
