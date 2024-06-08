@@ -277,7 +277,7 @@ def print_comparison_table():
             siri = get_siri_body_volume(height, weight)
             classification = get_bmi_category(get_bmi(height, weight))
             print(
-                    f"| {weight: >11} | {height:>10} | {orig:>8.2f} | {simple:>15.2f} | {bmi:>13.2f} | {brozak:>16.2f} | {siri:>14.2f} | {classification:<17} |"
+                f"| {weight: >11} | {height:>10} | {orig:>8.2f} | {simple:>15.2f} | {bmi:>13.2f} | {brozak:>16.2f} | {siri:>14.2f} | {classification:<17} |"
             )
         print("")
 
