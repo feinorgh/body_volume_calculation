@@ -46,9 +46,6 @@ def get_body_density(body_fat_ratio=0.12):
         + protein_adj * density_protein
     )
 
-    # total = lipids_adj + water_adj + other_adj + protein_adj
-    # print(f"Body/Fat ratio: {body_fat_ratio}, L: {lipids_adj:.2f}, W: {water_adj:.2f}, P: {protein_adj:.2f}, O: {other_adj:.2f}, Total: {total:.2f}")
-
 
 def get_examples():
     """Gets a list of examples to calculate the values on"""
@@ -258,8 +255,8 @@ def print_comparison_table():
         print("")
 
 def main():
-    #make_3d_plot()
     print_comparison_table()
+    make_3d_plot()
 
 
 if __name__ == "__main__":
