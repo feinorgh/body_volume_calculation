@@ -8,7 +8,6 @@
 """
 
 import matplotlib.pyplot as plt
-import numpy as np
 
 
 def get_body_density(body_fat_ratio=0.12):
@@ -17,7 +16,10 @@ def get_body_density(body_fat_ratio=0.12):
     This estimation seems to relate well to real world examples
 
     See:
-        Heymsfield SB, Wang J, Kehayias J, Heshka S, Lichtman S, Pierson RN Jr. Chemical determination of human body density in vivo: relevance to hydrodensitometry. Am J Clin Nutr. 1989 Dec;50(6):1282-9. doi: 10.1093/ajcn/50.6.1282. PMID: 2596420.
+        Heymsfield SB, Wang J, Kehayias J, Heshka S, Lichtman S, Pierson RN Jr.
+        Chemical determination of human body density in vivo: relevance to
+        hydrodensitometry. Am J Clin Nutr. 1989 Dec;50(6):1282-9.
+        doi: 10.1093/ajcn/50.6.1282. PMID: 2596420.
     """
     density_fat = 0.9  # kg / L
     density_water = 1.0  # kg / L
@@ -84,7 +86,8 @@ def get_brozak_body_fat_ratio(density):
 
 
 def get_brozak_body_volume(height, weight, gender="male", age=30):
-    """Gets the body volume in L using the Brozak formula for body/fat ratio, where
+    """Gets the body volume in L using the Brozak formula for
+    body/fat ratio, where
     height in m
     weight in kg
     gender is "male", "female", or "fluid"
@@ -198,21 +201,22 @@ def get_bmi(height, weight):
 
 def get_bmi_category(bmi):
     """Returns a string with the BMI basic category"""
+    classification = "Severe thinness"
     if bmi >= 40.0:
-        return "Obese (Class III)"
+        classification = "Obese (Class III)"
     if bmi >= 35.0:
-        return "Obese (Class II)"
+        classification = "Obese (Class II)"
     if bmi >= 30.0:
-        return "Obese (Class I)"
+        classification = "Obese (Class I)"
     if bmi >= 25.0:
-        return "Overweight"
+        classification = "Overweight"
     if bmi >= 18.5:
-        return "Normal"
+        classification = "Normal"
     if bmi >= 17.0:
-        return "Mild thinness"
+        classification = "Mild thinness"
     if bmi >= 16.0:
-        return "Moderate thinness"
-    return "Severe thinness"
+        classification = "Moderate thinness"
+    return classification
 
 
 def make_3d_plot():
@@ -264,10 +268,14 @@ def print_comparison_table():
     """Prints a comparison table between different models"""
     for weight in range(25, 150, 15):
         print(
-            "| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |"
+            "| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) "
+            "| BMI Model (L) | Brozak Model (L) | Siri Model (L) "
+            "| Classification    |"
         )
         print(
-            "|-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|"
+            "|-------------|------------|----------|-----------------"
+            "|---------------|------------------|----------------"
+            "|-------------------|"
         )
         for height in [0.7, 1.0, 1.22, 1.50, 1.75, 2.00, 2.27, 2.8]:
             orig = get_cdda_original_volume(height)
@@ -277,12 +285,15 @@ def print_comparison_table():
             siri = get_siri_body_volume(height, weight)
             classification = get_bmi_category(get_bmi(height, weight))
             print(
-                f"| {weight: >11} | {height:>10} | {orig:>8.2f} | {simple:>15.2f} | {bmi:>13.2f} | {brozak:>16.2f} | {siri:>14.2f} | {classification:<17} |"
+                f"| {weight: >11} | {height:>10} | {orig:>8.2f} "
+                f"| {simple:>15.2f} | {bmi:>13.2f} | {brozak:>16.2f} "
+                f"| {siri:>14.2f} | {classification:<17} |"
             )
         print("")
 
 
 def main():
+    """Prints a comparison table and makes a 3D plot of the formulas"""
     print_comparison_table()
     make_3d_plot()
 
