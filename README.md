@@ -54,7 +54,7 @@ You can examine this graph better if you run the script yourself, where you can 
 The graph shows (mostly) that the more sensitive the model is for weight, the larger the difference
 between low and high body weight.
 
-The BMI based models (including Brozek and Siri) all seem to produce volumes that inflated (*drum roll*) at
+The BMI based models (including Brozek and Siri) all seem to produce volumes that inflated (*drum fill*) at
 lower heights, the "BMI Model" less so.
 
 It also shows that something weird is going on with the Brozek models and Siri models outside the normal
