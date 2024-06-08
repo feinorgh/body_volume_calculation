@@ -27,13 +27,13 @@ A proposed volume calculation model based on an online tool, found in https://gi
 
 Uses the calculations for producing body fat ratio from BMI, and then applying the average body density based on lipids, water, and protein onto the weight.
 
-## Brozak Model
+## Brozek Model
 
-Uses the Brozak formula for body fat ratio, estimated from BMI. The Brozak model reputedly has ±1% accuracy against empirical methods such as water immersion.
+Uses the Brozek formula for body fat ratio, estimated from BMI. The Brozek model reputedly has ±1% accuracy against empirical methods such as water immersion.
 
 ## Siri Model
 
-An older model that used to be used in the same manner as the Brozak model, reputely has ±10% accuracy compared to empirical methods.
+An older model that used to be used in the same manner as the Brozek model, reputely has ±10% accuracy compared to empirical methods.
 
 # Graph over relations between models and parameters
 
@@ -43,7 +43,7 @@ The green lines are the original CDDA volume calculation (independent of weight)
 
 The red lines are the BMI model results.
 
-The blue lines are the Brozak model results.
+The blue lines are the Brozek model results.
 
 The yellow lines are the Siri model results.
 
@@ -55,7 +55,7 @@ between low and high body weight.
 The BMI based models (including Brozek and Siri) all seem to produce volumes that inflated (*drum roll*) at
 lower heights, the "BMI Model" less so.
 
-It also shows that something weird is going on with the Brozak models and Siri models outside the normal
+It also shows that something weird is going on with the Brozek models and Siri models outside the normal
 human size ranges.
 
 # References
@@ -70,13 +70,13 @@ https://calculator.academy/body-volume-calculator/
 # Results
 
 Out of these models, the pure "BMI Model" (really just a simple volume = weight / density calculation) seems
-to give reasonable results. The "Brozak" and "Siri" models break down when values are way outside normal
+to give reasonable results. The "Brozek" and "Siri" models break down when values are way outside normal
 human weights and heights (other models must be used for infants, dissoluted devourers, and blobs, supposedly).
 
 The classification is not meant to fat or thin shame anyone (real or imagined characters), but is the standard
 classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#Categories).
 
-| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
+| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozek Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|
 |          25 |        0.7 |     4.48 |           23.22 |         25.55 |            25.39 |          25.53 | Obese (Class III) |
 |          25 |        1.0 |    13.06 |           23.30 |         23.96 |            24.11 |          24.14 | Overweight        |
@@ -87,7 +87,7 @@ classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#
 |          25 |       2.27 |   152.78 |           23.66 |         22.86 |            23.30 |          23.26 | Severe thinness   |
 |          25 |        2.8 |   286.72 |           23.82 |         22.78 |            23.24 |          23.19 | Severe thinness   |
 
-| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
+| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozek Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|
 |          40 |        0.7 |     4.48 |           37.38 |         44.35 |            43.79 |          44.34 | Obese (Class III) |
 |          40 |        1.0 |    13.06 |           37.51 |         39.77 |            39.70 |          39.84 | Obese (Class III) |
@@ -98,7 +98,7 @@ classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#
 |          40 |       2.27 |   152.78 |           38.10 |         36.82 |            37.46 |          37.41 | Severe thinness   |
 |          40 |        2.8 |   286.72 |           38.34 |         36.60 |            37.30 |          37.23 | Severe thinness   |
 
-| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
+| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozek Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|
 |          55 |        0.7 |     4.48 |           51.70 |         66.62 |            66.32 |          67.82 | Obese (Class III) |
 |          55 |        1.0 |    13.06 |           51.89 |         56.80 |            56.36 |          56.72 | Obese (Class III) |
@@ -109,7 +109,7 @@ classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#
 |          55 |       2.27 |   152.78 |           52.70 |         50.97 |            51.75 |          51.70 | Severe thinness   |
 |          55 |        2.8 |   286.72 |           53.04 |         50.54 |            51.44 |          51.37 | Severe thinness   |
 
-| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
+| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozek Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|
 |          70 |        0.7 |     4.48 |           66.17 |         93.44 |            96.17 |          99.84 | Obese (Class III) |
 |          70 |        1.0 |    13.06 |           66.41 |         75.19 |            74.32 |          75.04 | Obese (Class III) |
@@ -120,7 +120,7 @@ classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#
 |          70 |       2.27 |   152.78 |           67.45 |         65.31 |            66.19 |          66.15 | Severe thinness   |
 |          70 |        2.8 |   286.72 |           67.90 |         64.61 |            65.68 |          65.60 | Severe thinness   |
 
-| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
+| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozek Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|
 |          85 |        0.7 |     4.48 |           80.79 |        126.35 |           140.84 |         150.07 | Obese (Class III) |
 |          85 |        1.0 |    13.06 |           81.08 |         95.13 |            93.93 |          95.20 | Obese (Class III) |
@@ -131,7 +131,7 @@ classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#
 |          85 |       2.27 |   152.78 |           82.36 |         79.85 |            80.77 |          80.75 | Moderate thinness |
 |          85 |        2.8 |   286.72 |           82.91 |         78.81 |            80.00 |          79.92 | Severe thinness   |
 
-| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
+| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozek Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|
 |         100 |        0.7 |     4.48 |           95.54 |        167.69 |           200.00 |         200.00 | Obese (Class III) |
 |         100 |        1.0 |    13.06 |           95.90 |        116.81 |           115.64 |         117.74 | Obese (Class III) |
@@ -142,7 +142,7 @@ classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#
 |         100 |       2.27 |   152.78 |           97.42 |         94.59 |            95.50 |          95.52 | Normal            |
 |         100 |        2.8 |   286.72 |           98.07 |         93.13 |            94.42 |          94.35 | Severe thinness   |
 
-| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
+| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozek Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|
 |         115 |        0.7 |     4.48 |          110.43 |        221.18 |           230.00 |         230.00 | Obese (Class III) |
 |         115 |        1.0 |    13.06 |          110.84 |        140.48 |           140.08 |         143.42 | Obese (Class III) |
@@ -153,7 +153,7 @@ classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#
 |         115 |       2.27 |   152.78 |          112.60 |        109.53 |           110.39 |         110.47 | Normal            |
 |         115 |        2.8 |   286.72 |          113.36 |        107.57 |           108.93 |         108.89 | Severe thinness   |
 
-| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
+| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozek Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|
 |         130 |        0.7 |     4.48 |          125.43 |        260.00 |             0.00 |           0.00 | Obese (Class III) |
 |         130 |        1.0 |    13.06 |          125.90 |        166.41 |           168.20 |         173.37 | Obese (Class III) |
@@ -164,7 +164,7 @@ classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#
 |         130 |       2.27 |   152.78 |          127.92 |        124.68 |           125.45 |         125.59 | Overweight        |
 |         130 |        2.8 |   286.72 |          128.78 |        122.15 |           123.54 |         123.52 | Moderate thinness |
 
-| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
+| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozek Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|
 |         145 |        0.7 |     4.48 |          140.55 |        290.00 |             0.00 |           0.00 | Obese (Class III) |
 |         145 |        1.0 |    13.06 |          141.07 |        194.95 |           201.38 |         209.36 | Obese (Class III) |
