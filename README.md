@@ -13,6 +13,14 @@ To run the script, you need matplotlib (or just comment out the plotting busines
 
 # Results
 
+Out of these models, the pure "BMI Model" (really just a simple volume = weight / density calculation) seems
+to give reasonable results. The "Brozak" and "Siri" models break down when values are way outside normal
+human weights and heights (other models must be used for infants, dissoluted devourers, and blobs, supposedly).
+
+The classification is not meant to fat or thin shame anyone (real or imagined characters), but is the standard
+classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#Categories).
+
+
 | Weight (kg) | Height (m) | CDDA (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |
 |-------------|------------|----------|---------------|------------------|----------------|-------------------|
 |          25 |        0.7 |     4.48 |         24.46 |            24.61 |          24.48 | Obese (Class III) |
