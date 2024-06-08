@@ -11,6 +11,23 @@ To run the script, you need matplotlib (or just comment out the plotting busines
 
 ![3D Plot](Figure_1.png)
 
+The green lines are the original CDDA volume calculation (independent of weight).
+
+The red line is the BMI model.
+
+The blue line is the Brozak model.
+
+The yellow line is the Siri model.
+
+You can examine this graph better if you run the script yourself, where you can rotate and zoom in.
+
+The graph shows (mostly) that the more sensitive the model is for weight, the larger the difference
+between low and high body weight.
+
+It also shows that something weird is going on with the Brozak models and Siri models outside the normal
+human size ranges.
+
+
 # Results
 
 Out of these models, the pure "BMI Model" (really just a simple volume = weight / density calculation) seems
