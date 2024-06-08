@@ -95,9 +95,11 @@ def get_brozak_body_volume(height, weight, gender="male", age=30):
     density = get_body_density(bfr)
     bfr_brozak = get_brozak_body_fat_ratio(density)
     density = get_body_density(bfr_brozak)
-    volume = weight * density
-    if volume < 0 or volume > weight * 2:
+    volume = weight / density
+    if volume < 0:
         return 0
+    if volume > weight * 2:
+        return weight * 2
     return volume
 
 
@@ -118,9 +120,11 @@ def get_siri_body_volume(height, weight, gender="male", age=30):
     density = get_body_density(bfr)
     bfr_siri = get_siri_body_fat_ratio(density)
     density = get_body_density(bfr_siri)
-    volume = weight * density
-    if volume < 0 or volume > weight * 2:
+    volume = weight / density
+    if volume < 0:
         return 0
+    if volume > weight * 2:
+        return weight * 2
     return volume
 
 
@@ -149,7 +153,7 @@ def get_bmi_body_volume(height, weight, gender="male", age=30):
     bmi = get_bmi(height, weight)
     bfr = get_bmi_body_fat_ratio(bmi, gender, age)
     density = get_body_density(bfr)
-    volume = weight * density
+    volume = weight / density
     if volume > weight * 2:
         return weight * 2
     if volume < 0:
@@ -180,7 +184,7 @@ def get_cdda_simple_brozek_volume(height, weight):
         + 0.00000056 * pow(weight, 2)
         - 0.00012828 * height_cm
     )
-    volume = weight * density
+    volume = weight / density
     return volume
 
 
