@@ -204,17 +204,17 @@ def get_bmi_category(bmi):
     classification = "Severe thinness"
     if bmi >= 40.0:
         classification = "Obese (Class III)"
-    if bmi >= 35.0:
+    elif bmi >= 35.0:
         classification = "Obese (Class II)"
-    if bmi >= 30.0:
+    elif bmi >= 30.0:
         classification = "Obese (Class I)"
-    if bmi >= 25.0:
+    elif bmi >= 25.0:
         classification = "Overweight"
-    if bmi >= 18.5:
+    elif bmi >= 18.5:
         classification = "Normal"
-    if bmi >= 17.0:
+    elif bmi >= 17.0:
         classification = "Mild thinness"
-    if bmi >= 16.0:
+    elif bmi >= 16.0:
         classification = "Moderate thinness"
     return classification
 
