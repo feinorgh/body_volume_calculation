@@ -245,7 +245,7 @@ def print_comparison_table():
     for weight in range(25, 150, 15):
         print("| Weight (kg) | Height (m) | CDDA (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |")
         print("|-------------|------------|----------|---------------|------------------|----------------|-------------------|")
-        for height in [0.7, 1.22, 1.75, 2.27, 2.8]:
+        for height in [0.7, 1.0, 1.22, 1.50, 1.75, 2.00, 2.27, 2.8]:
             orig = get_cdda_original_volume(height)
             bmi = get_bmi_body_volume(height, weight)
             brozak = get_brozak_body_volume(height, weight)
