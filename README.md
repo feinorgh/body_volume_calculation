@@ -60,11 +60,11 @@ human size ranges.
 
 # References
 
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2286542/#:~:text=It%20is%20generally%20assumed%20that,independent%20of%20its%20molecular%20weight.
-https://pubmed.ncbi.nlm.nih.gov/2596420/#:~:text=The%20average%20calculated%20lean%20(P,(1.100%20g%2Fcc).
-https://en.wikipedia.org/wiki/Body_fat_percentage
-https://en.wikipedia.org/wiki/Body_mass_index
-https://calculator.academy/body-volume-calculator/
+* https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2286542/
+* https://pubmed.ncbi.nlm.nih.gov/2596420/
+* https://en.wikipedia.org/wiki/Body_fat_percentage
+* https://en.wikipedia.org/wiki/Body_mass_index
+* https://calculator.academy/body-volume-calculator/
 
 
 # Results
