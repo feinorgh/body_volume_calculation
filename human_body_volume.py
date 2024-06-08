@@ -57,7 +57,7 @@ def get_examples():
             bfr_bmi = get_bmi_body_fat_ratio(bmi)
             density = get_body_density(bfr_bmi)
             bfr_brozak = get_brozak_body_fat_ratio(density)
-            bfr_siri   = get_siri_body_fat_ratio(density)
+            bfr_siri = get_siri_body_fat_ratio(density)
             bmi_volume = get_bmi_body_volume(height_m, weight)
             brozak_volume = get_brozak_body_volume(height_m, weight)
             siri_volume = get_siri_body_volume(height_m, weight)
@@ -72,7 +72,7 @@ def get_examples():
                     "density": density,
                     "bmi_volume": bmi_volume,
                     "brozak_volume": brozak_volume,
-                    "siri_volume": siri_volume
+                    "siri_volume": siri_volume,
                 }
             )
     return examples
@@ -85,10 +85,10 @@ def get_brozak_body_fat_ratio(density):
 
 def get_brozak_body_volume(height, weight, gender="male", age=30):
     """Gets the body volume in L using the Brozak formula for body/fat ratio, where
-        height in m
-        weight in kg
-        gender is "male", "female", or "fluid"
-        age in years
+    height in m
+    weight in kg
+    gender is "male", "female", or "fluid"
+    age in years
     """
     bmi = get_bmi(height, weight)
     bfr = get_bmi_body_fat_ratio(bmi, gender, age)
@@ -108,10 +108,10 @@ def get_siri_body_fat_ratio(density):
 
 def get_siri_body_volume(height, weight, gender="male", age=30):
     """Gets the body volume in L using the Siri formula for body/fat ratio
-        height in m
-        weight in kg
-        gender is "male", "female", or "fluid"
-        age in years
+    height in m
+    weight in kg
+    gender is "male", "female", or "fluid"
+    age in years
     """
     bmi = get_bmi(height, weight)
     bfr = get_bmi_body_fat_ratio(bmi, gender, age)
@@ -126,9 +126,9 @@ def get_siri_body_volume(height, weight, gender="male", age=30):
 
 def get_bmi_body_fat_ratio(bmi=20, gender="Male", age=30):
     """Gets the body fat ratio from the BMI, where
-        bmi is body mass index (float)
-        gender is "Male", "Female", or "Fluid"
-        age is in years (integer)
+    bmi is body mass index (float)
+    gender is "Male", "Female", or "Fluid"
+    age is in years (integer)
     """
     gender_contrib = 0
     if gender.lower() == "male":
@@ -141,10 +141,10 @@ def get_bmi_body_fat_ratio(bmi=20, gender="Male", age=30):
 
 def get_bmi_body_volume(height, weight, gender="male", age=30):
     """Gets the body volume using BMI for body/fat ratio where:
-        height in m
-        weight in kg
-        gender is "Male" or "Female" or "Fluid"
-        age is in years
+    height in m
+    weight in kg
+    gender is "Male" or "Female" or "Fluid"
+    age is in years
     """
     bmi = get_bmi(height, weight)
     bfr = get_bmi_body_fat_ratio(bmi, gender, age)
@@ -159,13 +159,29 @@ def get_bmi_body_volume(height, weight, gender="male", age=30):
 
 def get_cdda_original_volume(height):
     """Returns the volume in L for the original CDDA calculation, where
-        height is in m
+    height is in m
     """
     avg_human_volume = 70
     your_height = height * 100
     base_volume = your_height / 2.5
     proportional_volume = base_volume / avg_human_volume
     return pow(proportional_volume, 3.0) * avg_human_volume
+
+
+def get_cdda_simple_brozek_volume(height, weight):
+    """Returns the volume in L for the (simplified) Brozek based formula, where
+    height is in m
+    weight is in kg
+    """
+    height_cm = height * 100
+    density = (
+        1.097
+        - 0.00046971 * weight
+        + 0.00000056 * pow(weight, 2)
+        - 0.00012828 * height_cm
+    )
+    volume = weight * density
+    return volume
 
 
 def get_bmi(height, weight):
@@ -243,16 +259,24 @@ def make_3d_plot():
 def print_comparison_table():
     """Prints a comparison table between different models"""
     for weight in range(25, 150, 15):
-        print("| Weight (kg) | Height (m) | CDDA (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |")
-        print("|-------------|------------|----------|---------------|------------------|----------------|-------------------|")
+        print(
+            "| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) | BMI Model (L) | Brozak Model (L) | Siri Model (L) | Classification    |"
+        )
+        print(
+            "|-------------|------------|----------|-----------------|---------------|------------------|----------------|-------------------|"
+        )
         for height in [0.7, 1.0, 1.22, 1.50, 1.75, 2.00, 2.27, 2.8]:
             orig = get_cdda_original_volume(height)
+            simple = get_cdda_simple_brozek_volume(height, weight)
             bmi = get_bmi_body_volume(height, weight)
             brozak = get_brozak_body_volume(height, weight)
             siri = get_siri_body_volume(height, weight)
             classification = get_bmi_category(get_bmi(height, weight))
-            print(f"| {weight: >11} | {height:>10} | {orig:>8.2f} | {bmi:>13.2f} | {brozak:>16.2f} | {siri:>14.2f} | {classification:<17} |")
+            print(
+                    f"| {weight: >11} | {height:>10} | {orig:>8.2f} | {simple:>15.2f} | {bmi:>13.2f} | {brozak:>16.2f} | {siri:>14.2f} | {classification:<17} |"
+            )
         print("")
+
 
 def main():
     print_comparison_table()
