@@ -157,10 +157,10 @@ def get_bmi_body_volume(height, weight, gender="male", age=30):
     bfr = get_bmi_body_fat_ratio(bmi, gender, age)
     density = get_body_density(bfr)
     volume = weight / density
-    if volume > weight * 2:
-        return weight * 2
     if volume < 0:
         return 0
+    if volume > weight * 2:
+        return weight * 2
     return volume
 
 
@@ -266,7 +266,7 @@ def make_3d_plot():
 
 def print_comparison_table():
     """Prints a comparison table between different models"""
-    for weight in range(25, 200, 15):
+    for weight in range(25, 220, 15):
         print(
             "| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) "
             "| BMI Model (L) | Brozek Model (L) | Siri Model (L) "
