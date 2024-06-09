@@ -277,7 +277,27 @@ def print_comparison_table():
             "|---------------|------------------|----------------"
             "|-------------------|"
         )
-        for height in [0.7, 1.0, 1.22, 1.50, 1.75, 2.00, 2.27, 2.8]:
+        # 0.55 m is the height of the world's shortest human,
+        # Chandra Bahadur Dangi, weight unknown.
+        #   https://en.wikipedia.org/wiki/Chandra_Bahadur_Dangi
+        # 2.72 m (8'11") is the tallest human ever in existence,
+        # Robert Wadlow. his adult weight was 199 kg / 439 lb
+        #   https://en.wikipedia.org/wiki/Robert_Wadlow
+        # 1.62 m is the average female height worldwide
+        # 1.75 m is the average male height worldwide
+        for height in [
+            0.55,
+            0.7,
+            1.0,
+            1.22,
+            1.50,
+            1.62,
+            1.75,
+            2.00,
+            2.27,
+            2.72,
+            2.8,
+        ]:
             orig = get_cdda_original_volume(height)
             simple = get_cdda_simple_brozek_volume(height, weight)
             bmi = get_bmi_body_volume(height, weight)
