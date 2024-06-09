@@ -100,9 +100,10 @@ human size ranges.
 
 # Results
 
-Out of these models, the pure "BMI Model" (really just a simple volume = weight / density calculation) seems
-to give reasonable results. The "Brozek" and "Siri" models break down when values are way outside normal
-human weights and heights (other models must be used for infants, dissoluted devourers, and blobs, supposedly).
+Out of these models, the pure "BMI Model" seems to give reasonable results, with some strange results at the
+extremes, depending on the density calculations assuming most of the body then consists of fat.
+
+The "Brozek" and "Siri" models break down when values are way outside normal human weights and heights (other models must be used for infants, dissoluted devourers, and blobs, supposedly).
 
 The classification is not meant to fat or thin shame anyone (real or imagined characters), but is the standard
 classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#Categories).
