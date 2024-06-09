@@ -266,7 +266,7 @@ def make_3d_plot():
 
 def print_comparison_table():
     """Prints a comparison table between different models"""
-    for weight in range(25, 150, 15):
+    for weight in range(25, 200, 15):
         print(
             "| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) "
             "| BMI Model (L) | Brozek Model (L) | Siri Model (L) "
