@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 def get_body_density(body_fat_ratio=0.12):
     """Returns the average body density in kg / L
 
+    body_fat_ratio is the ratio to 1.0 of body fat
+
     This estimation seems to relate well to real world examples
 
     See:
@@ -21,32 +23,39 @@ def get_body_density(body_fat_ratio=0.12):
         hydrodensitometry. Am J Clin Nutr. 1989 Dec;50(6):1282-9.
         doi: 10.1093/ajcn/50.6.1282. PMID: 2596420.
     """
+
     density_fat = 0.9  # kg / L
     density_water = 1.0  # kg / L
     density_protein = 1.35  # kg / L
 
-    # figures below are mass ratios to a typical human cell
-    lipids = 0.12
+    # figures below are mass ratios to a typical human cell (lipids: 0.12)
     water = 0.65
     protein = 0.20
     other = 0.03
 
-    lipids_adj = lipids * (body_fat_ratio / lipids)
-
-    fat_free_total = water + protein + other
-    non_fat_ratio = (1.0 - lipids_adj) / fat_free_total
+    non_fat_ratio = 1.0 - body_fat_ratio
 
     water_adj = water * non_fat_ratio
     protein_adj = protein * non_fat_ratio
     other_adj = other * non_fat_ratio
+    lipids_adj = body_fat_ratio
 
     # we assume that 'other' has the same density as water
-    return (
-        lipids_adj * density_fat
-        + water_adj * density_water
-        + other_adj * density_water
-        + protein_adj * density_protein
-    )
+    return {
+        "average_density": (
+            lipids_adj * density_fat
+            + water_adj * density_water
+            + other_adj * density_water
+            + protein_adj * density_protein
+        )
+        / (lipids_adj + water_adj + other_adj + protein_adj),
+        "proportions": {
+            "lipids": lipids_adj,
+            "water": water_adj,
+            "protein": protein_adj,
+            "other": other_adj,
+        },
+    }
 
 
 def get_examples():
@@ -58,8 +67,9 @@ def get_examples():
             bmi = get_bmi(height_m, weight)
             bfr_bmi = get_bmi_body_fat_ratio(bmi)
             density = get_body_density(bfr_bmi)
-            bfr_brozek = get_brozek_body_fat_ratio(density)
-            bfr_siri = get_siri_body_fat_ratio(density)
+            avg_density = density.get("average_density")
+            bfr_brozek = get_brozek_body_fat_ratio(avg_density)
+            bfr_siri = get_siri_body_fat_ratio(avg_density)
             bmi_volume = get_bmi_body_volume(height_m, weight)
             brozek_volume = get_brozek_body_volume(height_m, weight)
             siri_volume = get_siri_body_volume(height_m, weight)
@@ -96,14 +106,14 @@ def get_brozek_body_volume(height, weight, gender="male", age=30):
     bmi = get_bmi(height, weight)
     bfr = get_bmi_body_fat_ratio(bmi, gender, age)
     density = get_body_density(bfr)
-    bfr_brozek = get_brozek_body_fat_ratio(density)
+    avg_density = density.get("average_density")
+    bfr_brozek = get_brozek_body_fat_ratio(avg_density)
     density = get_body_density(bfr_brozek)
-    volume = weight / density
-    if volume < 0:
-        return 0
-    if volume > weight * 2:
-        return weight * 2
-    return volume
+    avg_density = density.get("average_density")
+    volume = weight / avg_density
+    if volume < 0 or volume > weight * 2:
+        volume = 0
+    return {"volume": volume, "proportions": density.get("proportions")}
 
 
 def get_siri_body_fat_ratio(density):
@@ -121,14 +131,14 @@ def get_siri_body_volume(height, weight, gender="male", age=30):
     bmi = get_bmi(height, weight)
     bfr = get_bmi_body_fat_ratio(bmi, gender, age)
     density = get_body_density(bfr)
-    bfr_siri = get_siri_body_fat_ratio(density)
+    avg_density = density.get("average_density")
+    bfr_siri = get_siri_body_fat_ratio(avg_density)
     density = get_body_density(bfr_siri)
-    volume = weight / density
-    if volume < 0:
-        return 0
-    if volume > weight * 2:
-        return weight * 2
-    return volume
+    avg_density = density.get("average_density")
+    volume = weight / avg_density
+    if volume < 0 or volume > weight * 2:
+        volume = 0
+    return {"volume": volume, "proportions": density.get("proportions")}
 
 
 def get_bmi_body_fat_ratio(bmi=20, gender="Male", age=30):
@@ -156,12 +166,11 @@ def get_bmi_body_volume(height, weight, gender="male", age=30):
     bmi = get_bmi(height, weight)
     bfr = get_bmi_body_fat_ratio(bmi, gender, age)
     density = get_body_density(bfr)
-    volume = weight / density
-    if volume < 0:
-        return 0
-    if volume > weight * 2:
-        return weight * 2
-    return volume
+    avg_density = density.get("average_density")
+    volume = weight / avg_density
+    if volume < 0 or volume > weight * 2:
+        volume = 0
+    return {"volume": volume, "proportions": density.get("proportions")}
 
 
 def get_cdda_original_volume(height):
@@ -233,21 +242,21 @@ def make_3d_plot():
         volumes = []
         for weight in weights:
             volume = get_bmi_body_volume(height, weight, gender, age)
-            volumes.append(volume)
+            volumes.append(volume.get("volume"))
         ax.plot(weights, volumes, height, "r")
 
     for height in heights:
         volumes = []
         for weight in weights:
             volume = get_brozek_body_volume(height, weight, gender, age)
-            volumes.append(volume)
+            volumes.append(volume.get("volume"))
         ax.plot(weights, volumes, height, "b")
 
     for height in heights:
         volumes = []
         for weight in weights:
             volume = get_siri_body_volume(height, weight, gender, age)
-            volumes.append(volume)
+            volumes.append(volume.get("volume"))
         ax.plot(weights, volumes, height, "y")
 
     for height in heights:
@@ -264,19 +273,37 @@ def make_3d_plot():
     plt.show()
 
 
+def format_proportions(prop):
+    """Formats proportions in a compact way"""
+    string = ""
+    for k, v in prop.items():
+        string += f"{k[0].upper()}:{v:.2f} "
+    return string.strip()
+
+
 def print_comparison_table():
     """Prints a comparison table between different models"""
     for weight in range(25, 220, 15):
-        print(
-            "| Weight (kg) | Height (m) | CDDA (L) | CDDA Simple (L) "
-            "| BMI Model (L) | Brozek Model (L) | Siri Model (L) "
-            "| Classification    |"
-        )
-        print(
-            "|-------------|------------|----------|-----------------"
-            "|---------------|------------------|----------------"
-            "|-------------------|"
-        )
+        titles = [
+            "m(kg)",
+            "h(m)",
+            "CDDA(L)",
+            "Simple(L)",
+            "BMI(L)",
+            "BMI(P) fat/water/protein/other",
+            "Brozek(L)",
+            "Brozek(P) fat/water/protein/other",
+            "Siri(L)",
+            "Siri(P) fat/water/protein/other",
+        ]
+        length = {}
+        for title in titles:
+            print(f"| {title} ", end="")
+            length[title] = len(title)
+        print(f"| Category{' '*9} |")
+        for title in titles:
+            print(f"|{'-'*(length[title]+2)}", end="")
+        print(f"|{'-'*19}|")
         # 0.55 m is the height of the world's shortest human,
         # Chandra Bahadur Dangi, weight unknown.
         #   https://en.wikipedia.org/wiki/Chandra_Bahadur_Dangi
@@ -298,17 +325,28 @@ def print_comparison_table():
             2.72,
             2.8,
         ]:
-            orig = get_cdda_original_volume(height)
-            simple = get_cdda_simple_brozek_volume(height, weight)
             bmi = get_bmi_body_volume(height, weight)
             brozek = get_brozek_body_volume(height, weight)
             siri = get_siri_body_volume(height, weight)
-            classification = get_bmi_category(get_bmi(height, weight))
-            print(
-                f"| {weight: >11} | {height:>10} | {orig:>8.2f} "
-                f"| {simple:>15.2f} | {bmi:>13.2f} | {brozek:>16.2f} "
-                f"| {siri:>14.2f} | {classification:<17} |"
-            )
+            values = {
+                "CDDA(L)": get_cdda_original_volume(height),
+                "Simple(L)": get_cdda_simple_brozek_volume(height, weight),
+                "BMI(L)": bmi.get("volume"),
+                "BMI(P) fat/water/protein/other": bmi.get("proportions"),
+                "Brozek(L)": brozek.get("volume"),
+                "Brozek(P) fat/water/protein/other": brozek.get(
+                    "proportions"
+                ),
+                "Siri(L)": siri.get("volume"),
+                "Siri(P) fat/water/protein/other": siri.get("proportions"),
+            }
+            print(f"| {weight:>5} | {height:>4.2f} ", end="")
+            for k, v in values.items():
+                if k.endswith("other"):
+                    print(f"| {format_proportions(v):^{len(k)}} ", end="")
+                else:
+                    print(f"| {v:>{len(k)}.2f} ", end="")
+            print(f"| {get_bmi_category(get_bmi(height, weight)):^17} |")
         print("")
 
 
