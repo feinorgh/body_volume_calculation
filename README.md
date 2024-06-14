@@ -64,7 +64,7 @@ Where this model breaks down (outside of normal human heights/weights) the calcu
 
 An older model that used to be used in the same manner as the Brozek model, reputely has ±10% accuracy compared to empirical methods.
 
-This model also takes the proportion of fat vs. other components into account, and uses the same capping strategy as above.
+This model also takes the proportion of fat vs. other components into account, and uses the same clamping strategy as above.
 
 # Graph over relations between models and parameters
 
