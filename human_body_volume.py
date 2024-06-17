@@ -24,6 +24,11 @@ def get_body_density(body_fat_ratio=0.12):
         doi: 10.1093/ajcn/50.6.1282. PMID: 2596420.
     """
 
+    if body_fat_ratio < 0:
+        body_fat_ratio = 0
+    if body_fat_ratio > 1:
+        body_fat_ratio = 1
+
     density_fat = 0.9  # kg / L
     density_water = 1.0  # kg / L
     density_protein = 1.35  # kg / L
