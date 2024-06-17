@@ -295,11 +295,11 @@ def print_comparison_table():
             "CDDA(L)",
             "Simple(L)",
             "BMI(L)",
-            "BMI(P) fat/water/protein/other",
+            # "BMI(P) fat/water/protein/other",
             "Brozek(L)",
-            "Brozek(P) fat/water/protein/other",
+            # "Brozek(P) fat/water/protein/other",
             "Siri(L)",
-            "Siri(P) fat/water/protein/other",
+            # "Siri(P) fat/water/protein/other",
         ]
         length = {}
         for title in titles:
@@ -337,13 +337,13 @@ def print_comparison_table():
                 "CDDA(L)": get_cdda_original_volume(height),
                 "Simple(L)": get_cdda_simple_brozek_volume(height, weight),
                 "BMI(L)": bmi.get("volume"),
-                "BMI(P) fat/water/protein/other": bmi.get("proportions"),
+                # "BMI(P) fat/water/protein/other": bmi.get("proportions"),
                 "Brozek(L)": brozek.get("volume"),
-                "Brozek(P) fat/water/protein/other": brozek.get(
-                    "proportions"
-                ),
+                # "Brozek(P) fat/water/protein/other": brozek.get(
+                #     "proportions"
+                # ),
                 "Siri(L)": siri.get("volume"),
-                "Siri(P) fat/water/protein/other": siri.get("proportions"),
+                # "Siri(P) fat/water/protein/other": siri.get("proportions"),
             }
             print(f"| {weight:>5} | {height:>4.2f} ", end="")
             for k, v in values.items():
