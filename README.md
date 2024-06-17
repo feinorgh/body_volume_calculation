@@ -108,8 +108,11 @@ The "Brozek" and "Siri" models break down when values are way outside normal hum
 The classification is not meant to fat or thin shame anyone (real or imagined characters), but is the standard
 classification that WHO uses (see https://en.wikipedia.org/wiki/Body_mass_index#Categories).
 
-For the BMI, Brozek and Siri models, the estimated proportions of fat/water/protein/other are included. As quickly becomes obvious the formula for calculating this is not normalized to
-give results within | 0 < > 1 |, which may be a source for the nonsensical results at the extremes.
+For the BMI, Brozek and Siri models, the estimated proportions of fat/water/protein/other are included.
+
+Outside "normal" ranges for humans, some of the formulas that calculate BMI give strange results, regarding
+fat content. Currently the ratio of fat to other substances is clamped between 0 and 1, to not give non-sensical
+results.
 
 | m(kg) | h(m) | CDDA(L) | Simple(L) | BMI(L) | Brozek(L) | Siri(L) | Category          |
 |-------|------|---------|-----------|--------|-----------|---------|-------------------|
