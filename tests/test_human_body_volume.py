@@ -170,11 +170,13 @@ class TestVolumeModels:
 
     def test_cdda_original_independent_of_weight(self):
         """CDDA Original only depends on height, not weight."""
-        vol_a = get_cdda_original_volume(1.75)
-        vol_b = get_cdda_original_volume(1.75)
-        assert vol_a == vol_b
+        # The function signature accepts only height – no weight parameter.
         sig = inspect.signature(get_cdda_original_volume)
         assert list(sig.parameters.keys()) == ["height"]
+        # Different heights should produce different volumes.
+        vol_short = get_cdda_original_volume(1.60)
+        vol_tall = get_cdda_original_volume(1.90)
+        assert vol_tall > vol_short
 
 
 # ── Brozek & Siri body-fat-from-density formulas ──────────────────────────
