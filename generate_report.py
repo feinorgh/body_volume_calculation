@@ -15,12 +15,13 @@ import os
 import textwrap
 
 import matplotlib
+
 matplotlib.use("Agg")  # non-interactive backend for headless rendering
 
-import matplotlib.pyplot as plt  # noqa: E402
 import matplotlib.patches as mpatches  # noqa: E402
-from matplotlib.patches import FancyBboxPatch  # noqa: E402
+import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
+from matplotlib.patches import FancyBboxPatch  # noqa: E402
 
 from human_body_volume import (  # noqa: E402
     get_bmi,
@@ -40,7 +41,7 @@ from human_body_volume import (  # noqa: E402
 REPORT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "report")
 REPORT_MD = os.path.join(os.path.dirname(os.path.abspath(__file__)), "REPORT.md")
 
-WEIGHTS = np.arange(30, 201, 5)   # kg
+WEIGHTS = np.arange(30, 201, 5)  # kg
 HEIGHTS = np.arange(1.40, 2.11, 0.05)  # m  (reasonable adult range)
 
 GENDER = "male"
@@ -71,6 +72,7 @@ BMI_CATEGORY_COLORS = {
 # Helper – compute volume grids
 # ---------------------------------------------------------------------------
 
+
 def _volume_grid(model_fn, weights, heights):
     """Return a 2-D NumPy array of volumes (rows=heights, cols=weights)."""
     grid = np.zeros((len(heights), len(weights)))
@@ -97,6 +99,7 @@ def _cdda_original_grid(weights, heights):
 # Figure 1 – Heatmaps for each model
 # ---------------------------------------------------------------------------
 
+
 def make_heatmaps(weights, heights):
     """Generate one heatmap per model: weight on X, height on Y, volume as
     colour intensity.  Saved as ``report/heatmaps.png``."""
@@ -105,9 +108,7 @@ def make_heatmaps(weights, heights):
         "BMI": lambda h, w: get_bmi_body_volume(h, w, GENDER, AGE),
         "Brozek": lambda h, w: get_brozek_body_volume(h, w, GENDER, AGE),
         "Siri": lambda h, w: get_siri_body_volume(h, w, GENDER, AGE),
-        "Two-Compartment": lambda h, w: get_two_compartment_body_volume(
-            h, w, GENDER
-        ),
+        "Two-Compartment": lambda h, w: get_two_compartment_body_volume(h, w, GENDER),
         "CDDA Simple": lambda h, w: get_cdda_simple_brozek_volume(h, w),
         "CDDA Original": lambda h, w: get_cdda_original_volume(h),
     }
@@ -122,7 +123,7 @@ def make_heatmaps(weights, heights):
     # Common colour range so heatmaps are comparable
     vmin, vmax = 20, 250
 
-    for ax, (name, fn) in zip(axes.flat, models.items()):
+    for ax, (name, fn) in zip(axes.flat, models.items(), strict=False):
         grid = _volume_grid(fn, weights, heights)
         im = ax.imshow(
             grid,
@@ -133,8 +134,7 @@ def make_heatmaps(weights, heights):
             vmax=vmax,
             cmap="viridis",
         )
-        ax.set_title(name, fontsize=13, color=MODEL_COLORS[name],
-                      fontweight="bold")
+        ax.set_title(name, fontsize=13, color=MODEL_COLORS[name], fontweight="bold")
         ax.set_xlabel("Weight (kg)")
         ax.set_ylabel("Height (m)")
         fig.colorbar(im, ax=ax, label="Volume (L)", shrink=0.85)
@@ -149,41 +149,35 @@ def make_heatmaps(weights, heights):
 # Figure 2 – Line plots at fixed heights
 # ---------------------------------------------------------------------------
 
+
 def make_line_plots(weights, heights):
     """For a selection of heights, plot volume vs weight for each model.
     Saved as ``report/line_plots.png``."""
 
     selected_heights = [1.55, 1.65, 1.75, 1.85, 2.00]
 
-    fig, axes = plt.subplots(1, len(selected_heights), figsize=(22, 5),
-                             sharey=True, constrained_layout=True)
+    fig, axes = plt.subplots(
+        1, len(selected_heights), figsize=(22, 5), sharey=True, constrained_layout=True
+    )
     fig.suptitle(
         "Volume vs Weight at Fixed Heights",
         fontsize=16,
         fontweight="bold",
     )
 
-    for ax, h in zip(axes, selected_heights):
+    for ax, h in zip(axes, selected_heights, strict=True):
         for name, color in MODEL_COLORS.items():
             vols = []
             for w in weights:
                 w = float(w)
                 if name == "BMI":
-                    vols.append(
-                        get_bmi_body_volume(h, w, GENDER, AGE)["volume"]
-                    )
+                    vols.append(get_bmi_body_volume(h, w, GENDER, AGE)["volume"])
                 elif name == "Brozek":
-                    vols.append(
-                        get_brozek_body_volume(h, w, GENDER, AGE)["volume"]
-                    )
+                    vols.append(get_brozek_body_volume(h, w, GENDER, AGE)["volume"])
                 elif name == "Siri":
-                    vols.append(
-                        get_siri_body_volume(h, w, GENDER, AGE)["volume"]
-                    )
+                    vols.append(get_siri_body_volume(h, w, GENDER, AGE)["volume"])
                 elif name == "Two-Compartment":
-                    vols.append(
-                        get_two_compartment_body_volume(h, w, GENDER)
-                    )
+                    vols.append(get_two_compartment_body_volume(h, w, GENDER))
                 elif name == "CDDA Simple":
                     vols.append(get_cdda_simple_brozek_volume(h, w))
                 elif name == "CDDA Original":
@@ -205,6 +199,7 @@ def make_line_plots(weights, heights):
 # ---------------------------------------------------------------------------
 # Figure 3 – BMI classification map
 # ---------------------------------------------------------------------------
+
 
 def make_bmi_classification_map(weights, heights):
     """Colour-coded BMI category map with weight on X and height on Y.
@@ -245,11 +240,9 @@ def make_bmi_classification_map(weights, heights):
 
     # Legend
     patches = [
-        mpatches.Patch(color=BMI_CATEGORY_COLORS[c], label=c)
-        for c in categories
+        mpatches.Patch(color=BMI_CATEGORY_COLORS[c], label=c) for c in categories
     ]
-    ax.legend(handles=patches, loc="upper left", fontsize=9,
-              title="BMI Category")
+    ax.legend(handles=patches, loc="upper left", fontsize=9, title="BMI Category")
 
     path = os.path.join(REPORT_DIR, "bmi_classification.png")
     fig.savefig(path, dpi=150)
@@ -260,6 +253,7 @@ def make_bmi_classification_map(weights, heights):
 # ---------------------------------------------------------------------------
 # Figure 4 – Humanoid figure illustrations
 # ---------------------------------------------------------------------------
+
 
 def _draw_humanoid(ax, bmi_category, bmi_value, height_m, weight_kg):
     """Draw a stylised humanoid silhouette whose proportions reflect the
@@ -294,7 +288,8 @@ def _draw_humanoid(ax, bmi_category, bmi_value, height_m, weight_kg):
     torso_y = head_y - head_r - torso_h - 0.01
     torso = FancyBboxPatch(
         (cx - torso_w / 2, torso_y),
-        torso_w, torso_h,
+        torso_w,
+        torso_h,
         boxstyle="round,pad=0.02",
         facecolor=color,
         edgecolor="none",
@@ -309,7 +304,8 @@ def _draw_humanoid(ax, bmi_category, bmi_value, height_m, weight_kg):
         arm_x = cx + sign * (torso_w / 2 + arm_w / 2 + 0.01)
         arm = FancyBboxPatch(
             (arm_x - arm_w / 2, arm_y - arm_h),
-            arm_w, arm_h,
+            arm_w,
+            arm_h,
             boxstyle="round,pad=0.01",
             facecolor=color,
             edgecolor="none",
@@ -325,7 +321,8 @@ def _draw_humanoid(ax, bmi_category, bmi_value, height_m, weight_kg):
         leg_x = cx + sign * (leg_w / 2 + gap)
         leg = FancyBboxPatch(
             (leg_x - leg_w / 2, leg_y - leg_h),
-            leg_w, leg_h,
+            leg_w,
+            leg_h,
             boxstyle="round,pad=0.01",
             facecolor=color,
             edgecolor="none",
@@ -338,13 +335,23 @@ def _draw_humanoid(ax, bmi_category, bmi_value, height_m, weight_kg):
     ax.axis("off")
 
     ax.text(
-        cx, 0.05, f"BMI {bmi_value:.1f}\n{bmi_category}",
-        ha="center", va="bottom", fontsize=9, fontweight="bold",
+        cx,
+        0.05,
+        f"BMI {bmi_value:.1f}\n{bmi_category}",
+        ha="center",
+        va="bottom",
+        fontsize=9,
+        fontweight="bold",
         color=color,
     )
     ax.text(
-        cx, 0.0, f"{weight_kg} kg / {height_m:.2f} m",
-        ha="center", va="bottom", fontsize=7, color="#555555",
+        cx,
+        0.0,
+        f"{weight_kg} kg / {height_m:.2f} m",
+        ha="center",
+        va="bottom",
+        fontsize=7,
+        color="#555555",
     )
 
 
@@ -365,7 +372,10 @@ def make_humanoid_figures():
     ]
 
     fig, axes = plt.subplots(
-        1, len(representatives), figsize=(20, 6), constrained_layout=True,
+        1,
+        len(representatives),
+        figsize=(20, 6),
+        constrained_layout=True,
     )
     fig.suptitle(
         "Humanoid Figures by BMI Classification",
@@ -373,7 +383,7 @@ def make_humanoid_figures():
         fontweight="bold",
     )
 
-    for ax, (cat, h, w) in zip(axes, representatives):
+    for ax, (cat, h, w) in zip(axes, representatives, strict=True):
         bmi = get_bmi(h, w)
         _draw_humanoid(ax, cat, bmi, h, w)
 
@@ -386,6 +396,7 @@ def make_humanoid_figures():
 # ---------------------------------------------------------------------------
 # Figure 5 – Model comparison at a fixed height
 # ---------------------------------------------------------------------------
+
 
 def make_model_comparison(weights):
     """Bar-chart style comparison of all six models at height = 1.75 m
@@ -403,17 +414,11 @@ def make_model_comparison(weights):
         vols = []
         for w in sample_weights:
             if name == "BMI":
-                vols.append(
-                    get_bmi_body_volume(h, w, GENDER, AGE)["volume"]
-                )
+                vols.append(get_bmi_body_volume(h, w, GENDER, AGE)["volume"])
             elif name == "Brozek":
-                vols.append(
-                    get_brozek_body_volume(h, w, GENDER, AGE)["volume"]
-                )
+                vols.append(get_brozek_body_volume(h, w, GENDER, AGE)["volume"])
             elif name == "Siri":
-                vols.append(
-                    get_siri_body_volume(h, w, GENDER, AGE)["volume"]
-                )
+                vols.append(get_siri_body_volume(h, w, GENDER, AGE)["volume"])
             elif name == "Two-Compartment":
                 vols.append(get_two_compartment_body_volume(h, w, GENDER))
             elif name == "CDDA Simple":
@@ -443,6 +448,7 @@ def make_model_comparison(weights):
 # ---------------------------------------------------------------------------
 # Markdown table
 # ---------------------------------------------------------------------------
+
 
 def generate_comparison_table():
     """Return a Markdown string with a comparison table for selected
@@ -482,6 +488,7 @@ def generate_comparison_table():
 # ---------------------------------------------------------------------------
 # Write REPORT.md
 # ---------------------------------------------------------------------------
+
 
 def write_report_md(table_md):
     """Write the companion Markdown document."""
@@ -579,6 +586,7 @@ def write_report_md(table_md):
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main():
     """Generate all report artefacts."""
