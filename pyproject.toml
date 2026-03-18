@@ -1,0 +1,44 @@
+[project]
+name = "body-volume-calculation"
+version = "0.1.0"
+description = "Compare various algorithms for calculating human body volume"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib",
+    "numpy",
+]
+
+[project.scripts]
+body-volume = "human_body_volume:main"
+generate-report = "generate_report:main"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest",
+    "ruff",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501", # line too long (handled by formatter)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["human_body_volume", "generate_report"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Outputs data to compare various algorithms
-   for calculating human body volume
+for calculating human body volume
 
-   The calculations in here are taken from
-   * https://en.wikipedia.org/wiki/Body_fat_percentage
+The calculations in here are taken from
+* https://en.wikipedia.org/wiki/Body_fat_percentage
 
 """
 
@@ -324,7 +324,7 @@ def make_3d_plot():
 
     for height in heights:
         volumes = []
-        for weight in weights:
+        for _weight in weights:
             volume = get_cdda_original_volume(height)
             volumes.append(volume)
         ax.plot(weights, volumes, height, color="g")
@@ -371,10 +371,10 @@ def print_comparison_table():
         for title in titles:
             print(f"| {title} ", end="")
             length[title] = len(title)
-        print(f"| Category{' '*9} |")
+        print(f"| Category{' ' * 9} |")
         for title in titles:
-            print(f"|{'-'*(length[title]+2)}", end="")
-        print(f"|{'-'*19}|")
+            print(f"|{'-' * (length[title] + 2)}", end="")
+        print(f"|{'-' * 19}|")
         # 0.55 m is the height of the world's shortest human,
         # Chandra Bahadur Dangi, weight unknown.
         #   https://en.wikipedia.org/wiki/Chandra_Bahadur_Dangi
