@@ -15,49 +15,58 @@ def get_body_density(body_fat_ratio=0.12):
 
     body_fat_ratio is the ratio to 1.0 of body fat
 
-    This estimation seems to relate well to real world examples
+    Uses a four-compartment model (fat, water, protein, mineral) with the
+    physically correct harmonic-mean formula for mixture density:
+
+        1 / D = sum(f_i / d_i)
+
+    where f_i are mass fractions that sum to 1.0 and d_i are the component
+    densities.  The mineral compartment (bone and dissolved minerals, density
+    ~3.0 kg/L) was missing from the original three-component model; adding it
+    brings the implied fat-free-mass density much closer to the literature
+    value of ~1.1 kg/L.
 
     See:
         Heymsfield SB, Wang J, Kehayias J, Heshka S, Lichtman S, Pierson RN Jr.
         Chemical determination of human body density in vivo: relevance to
         hydrodensitometry. Am J Clin Nutr. 1989 Dec;50(6):1282-9.
         doi: 10.1093/ajcn/50.6.1282. PMID: 2596420.
+
+        Brozek J, Grande F, Anderson JT, Keys A.
+        Densitometric analysis of body composition: revision of some
+        quantitative assumptions. Ann N Y Acad Sci. 1963;110:113-40.
     """
 
     body_fat_ratio = max(body_fat_ratio, 0)
     body_fat_ratio = min(body_fat_ratio, 1)
 
-    density_fat = 0.9  # kg / L
-    density_water = 1.0  # kg / L
-    density_protein = 1.35  # kg / L
+    # Component densities in kg / L
+    densities = {"fat": 0.9, "water": 1.0, "protein": 1.34, "mineral": 3.0}
 
-    # figures below are mass ratios to a typical human cell (lipids: 0.12)
-    water = 0.65
-    protein = 0.20
-    other = 0.03
+    # Reference non-fat mass fractions for a typical body (Brozek et al. 1963).
+    # "other" is assumed to have the same density as water.
+    ref_non_fat = {"water": 0.62, "protein": 0.17, "mineral": 0.06, "other": 0.03}
+    ref_total = sum(ref_non_fat.values())
 
     non_fat_ratio = 1.0 - body_fat_ratio
 
-    water_adj = water * non_fat_ratio
-    protein_adj = protein * non_fat_ratio
-    other_adj = other * non_fat_ratio
-    lipids_adj = body_fat_ratio
+    # Normalised mass fractions that always sum to 1.0
+    fractions = {k: (v / ref_total) * non_fat_ratio for k, v in ref_non_fat.items()}
+    fractions["lipids"] = body_fat_ratio
 
-    # we assume that 'other' has the same density as water
+    # Physically correct mixture density (harmonic mean weighted by mass
+    # fractions).  "other" is assumed to have the same density as water.
+    inverse_density = (
+        fractions["lipids"] / densities["fat"]
+        + fractions["water"] / densities["water"]
+        + fractions["other"] / densities["water"]
+        + fractions["protein"] / densities["protein"]
+        + fractions["mineral"] / densities["mineral"]
+    )
+
     return {
-        "average_density": (
-            lipids_adj * density_fat
-            + water_adj * density_water
-            + other_adj * density_water
-            + protein_adj * density_protein
-        )
-        / (lipids_adj + water_adj + other_adj + protein_adj),
-        "proportions": {
-            "lipids": lipids_adj,
-            "water": water_adj,
-            "protein": protein_adj,
-            "other": other_adj,
-        },
+        "average_density": 1.0 / inverse_density if inverse_density > 0 else 1.0,
+        "proportions": fractions,
     }
 
 
@@ -76,6 +85,7 @@ def get_examples():
             bmi_volume = get_bmi_body_volume(height_m, weight)
             brozek_volume = get_brozek_body_volume(height_m, weight)
             siri_volume = get_siri_body_volume(height_m, weight)
+            two_comp_volume = get_two_compartment_body_volume(height_m, weight)
             examples.append(
                 {
                     "weight": weight,
@@ -88,6 +98,7 @@ def get_examples():
                     "bmi_volume": bmi_volume,
                     "brozek_volume": brozek_volume,
                     "siri_volume": siri_volume,
+                    "two_comp_volume": two_comp_volume,
                 }
             )
     return examples
@@ -203,6 +214,55 @@ def get_cdda_simple_brozek_volume(height, weight):
     return volume
 
 
+def get_two_compartment_body_volume(height, weight, gender="male"):
+    """Returns the body volume in L using an empirical regression model.
+
+    height in m
+    weight in kg
+    gender is "male", "female", or "fluid"
+
+    Uses the standard two-compartment density model (Siri 1961) together
+    with the Deurenberg et al. (1998) BMI-to-body-fat conversion.  The
+    two-compartment model treats the body as fat mass (density 0.9007 kg/L)
+    plus fat-free mass (density 1.1000 kg/L):
+
+        D = 1 / (BF / d_fat  +  (1 - BF) / d_ffm)
+
+    These density values are the most widely used reference constants in
+    body-composition research (Siri 1961; Brozek et al. 1963).
+
+    Unlike the Brozek/Siri pipeline functions in this module, which
+    pass the estimated density through a second body-fat formula and then
+    back to density (introducing compounding error), this function applies
+    the two-compartment physics equation directly.
+
+    See:
+        Siri WE. Body composition from fluid spaces and density: analysis
+        of methods. In: Brozek J, Henschel A, editors. Techniques for
+        Measuring Body Composition. Washington, DC: National Academy of
+        Sciences; 1961. p. 223-44.
+
+        Deurenberg P, Yap M, van Staveren WA. Body mass index and percent
+        body fat: a meta analysis among different ethnic groups. Int J Obes
+        Relat Metab Disord. 1998;22(12):1164-71.
+    """
+    bmi = get_bmi(height, weight)
+    bfr = get_bmi_body_fat_ratio(bmi, gender)
+    bfr = max(bfr, 0.0)
+    bfr = min(bfr, 1.0)
+
+    d_fat = 0.9007  # kg / L  (Siri 1961)
+    d_ffm = 1.1000  # kg / L  (Siri 1961)
+
+    density = 1.0 / (bfr / d_fat + (1.0 - bfr) / d_ffm)
+    volume = weight / density
+
+    if volume < 0 or volume > weight * 2:
+        volume = 0
+
+    return volume
+
+
 def get_bmi(height, weight):
     """Gets the BMI for a given height and weight
     weight is in kg
@@ -269,6 +329,13 @@ def make_3d_plot():
             volumes.append(volume)
         ax.plot(weights, volumes, height, color="g")
 
+    for height in heights:
+        volumes = []
+        for weight in weights:
+            volume = get_two_compartment_body_volume(height, weight, gender)
+            volumes.append(volume)
+        ax.plot(weights, volumes, height, color="m")
+
     ax.set_xlabel("Weight (kg)")
     ax.set_ylabel("Volume (L)")
     ax.set_zlabel("Height (m)")
@@ -298,6 +365,7 @@ def print_comparison_table():
             # "Brozek(P) fat/water/protein/other",
             "Siri(L)",
             # "Siri(P) fat/water/protein/other",
+            "2Comp(L)",
         ]
         length = {}
         for title in titles:
@@ -342,6 +410,7 @@ def print_comparison_table():
                 # ),
                 "Siri(L)": siri.get("volume"),
                 # "Siri(P) fat/water/protein/other": siri.get("proportions"),
+                "2Comp(L)": get_two_compartment_body_volume(height, weight),
             }
             print(f"| {weight:>5} | {height:>4.2f} ", end="")
             for k, v in values.items():
