@@ -155,11 +155,14 @@ class TestVolumeModels(unittest.TestCase):
         self.assertGreater(v_heavy, v_light)
 
     def test_cdda_original_independent_of_weight(self):
-        """CDDA Original only depends on height."""
-        self.assertEqual(
-            get_cdda_original_volume(1.75),
-            get_cdda_original_volume(1.75),
-        )
+        """CDDA Original only depends on height, not weight."""
+        vol_light = get_cdda_original_volume(1.75)
+        vol_heavy = get_cdda_original_volume(1.75)
+        self.assertEqual(vol_light, vol_heavy)
+        # Verify the function signature doesn't accept weight at all
+        import inspect  # pylint: disable=import-outside-toplevel
+        sig = inspect.signature(get_cdda_original_volume)
+        self.assertEqual(list(sig.parameters.keys()), ["height"])
 
 
 class TestBrozekSiriFormulas(unittest.TestCase):
