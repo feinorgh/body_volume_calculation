@@ -133,8 +133,9 @@ def make_heatmaps(weights, heights):
             vmax=vmax,
             cmap="viridis",
         )
-        ax.set_title(name, fontsize=13, color=MODEL_COLORS[name],
-                      fontweight="bold")
+        ax.set_title(
+            name, fontsize=13, color=MODEL_COLORS[name], fontweight="bold"
+        )
         ax.set_xlabel("Weight (kg)")
         ax.set_ylabel("Height (m)")
         fig.colorbar(im, ax=ax, label="Volume (L)", shrink=0.85)

@@ -67,38 +67,28 @@ class TestFigureGeneration(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.tmpdir)
 
-    @patch("generate_report.REPORT_DIR")
-    def test_make_heatmaps_creates_file(self, mock_dir):
-        mock_dir.__str__ = lambda s: self.tmpdir
+    def test_make_heatmaps_creates_file(self):
         with patch("generate_report.REPORT_DIR", self.tmpdir):
             path = make_heatmaps(TEST_WEIGHTS, TEST_HEIGHTS)
         self.assertTrue(os.path.isfile(path))
         self.assertGreater(os.path.getsize(path), 0)
 
-    @patch("generate_report.REPORT_DIR")
-    def test_make_line_plots_creates_file(self, mock_dir):
-        mock_dir.__str__ = lambda s: self.tmpdir
+    def test_make_line_plots_creates_file(self):
         with patch("generate_report.REPORT_DIR", self.tmpdir):
             path = make_line_plots(TEST_WEIGHTS, TEST_HEIGHTS)
         self.assertTrue(os.path.isfile(path))
 
-    @patch("generate_report.REPORT_DIR")
-    def test_make_bmi_classification_creates_file(self, mock_dir):
-        mock_dir.__str__ = lambda s: self.tmpdir
+    def test_make_bmi_classification_creates_file(self):
         with patch("generate_report.REPORT_DIR", self.tmpdir):
             path = make_bmi_classification_map(TEST_WEIGHTS, TEST_HEIGHTS)
         self.assertTrue(os.path.isfile(path))
 
-    @patch("generate_report.REPORT_DIR")
-    def test_make_humanoid_figures_creates_file(self, mock_dir):
-        mock_dir.__str__ = lambda s: self.tmpdir
+    def test_make_humanoid_figures_creates_file(self):
         with patch("generate_report.REPORT_DIR", self.tmpdir):
             path = make_humanoid_figures()
         self.assertTrue(os.path.isfile(path))
 
-    @patch("generate_report.REPORT_DIR")
-    def test_make_model_comparison_creates_file(self, mock_dir):
-        mock_dir.__str__ = lambda s: self.tmpdir
+    def test_make_model_comparison_creates_file(self):
         with patch("generate_report.REPORT_DIR", self.tmpdir):
             path = make_model_comparison(TEST_WEIGHTS)
         self.assertTrue(os.path.isfile(path))
